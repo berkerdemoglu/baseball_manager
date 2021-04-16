@@ -31,6 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # My apps
+    'pages',
+    'teams',
+    'users',
+
     # Default django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,11 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # My apps
-    'pages',
-    'teams',
-    'users',
 
     # Third party apps
     'django_countries',
@@ -132,3 +132,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# My settings
+LOGIN_URL = 'users:login'

@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from .models import Team, Player, Manager
 from .forms import TeamForm, PlayerForm, ManagerForm
 
 
 # Team views
+@login_required
 def teams(request):
 	"""Page that lists all teams."""
 	teams = Team.objects.all()
@@ -12,6 +14,7 @@ def teams(request):
 	return render(request, 'teams/teams.html', context)
 
 
+@login_required
 def team(request, team_id):
 	"""Page for a single team."""
 	team = Team.objects.get(id=team_id)
@@ -20,21 +23,7 @@ def team(request, team_id):
 	return render(request, 'teams/team.html', context)
 
 
-def remove_team(request, team_id):
-	"""View for removing a team."""
-	team = Team.objects.get(id=team_id)
-	team.delete()
-	return redirect('teams:teams')
-
-
-# Player views
-def player(request, player_id):
-	"""Page for an individual player."""
-	player = Player.objects.get(id=player_id)
-	context = {'player': player}
-	return render(request, 'teams/player.html', context)
-
-
+@login_required
 def new_team(request):
 	"""Page for adding a new team."""
 	if request.method != 'POST':
@@ -51,6 +40,24 @@ def new_team(request):
 	return render(request, 'teams/new_team.html', context)
 
 
+@login_required
+def remove_team(request, team_id):
+	"""View for removing a team."""
+	team = Team.objects.get(id=team_id)
+	team.delete()
+	return redirect('teams:teams')
+
+
+# Player views
+@login_required
+def player(request, player_id):
+	"""Page for an individual player."""
+	player = Player.objects.get(id=player_id)
+	context = {'player': player}
+	return render(request, 'teams/player.html', context)
+
+
+@login_required
 def new_player(request, team_id):
 	"""Page for adding a new player to a team."""
 	team = Team.objects.get(id=team_id)
@@ -71,6 +78,7 @@ def new_player(request, team_id):
 	return render(request, 'teams/new_player.html', context)
 
 
+@login_required
 def remove_player(request, player_id):
 	"""View for removing a player."""
 	player = Player.objects.get(id=player_id)
@@ -79,6 +87,7 @@ def remove_player(request, player_id):
 	return redirect('teams:team', team_id=team_id)
 
 
+@login_required
 def edit_player(request, player_id):
 	"""Page for editing a player."""
 	player = Player.objects.get(id=player_id)
@@ -98,6 +107,7 @@ def edit_player(request, player_id):
 
 
 # Manager views
+@login_required
 def manager(request, manager_id):
 	"""Page for an individual player."""
 	manager = Manager.objects.get(id=manager_id)
@@ -105,6 +115,7 @@ def manager(request, manager_id):
 	return render(request, 'teams/manager.html', context)
 
 
+@login_required
 def remove_manager(request, manager_id):
 	"""View for removing a manager."""
 	manager = Manager.objects.get(id=manager_id)
@@ -113,6 +124,7 @@ def remove_manager(request, manager_id):
 	return redirect('teams:team', team_id=team_id)
 
 
+@login_required
 def new_manager(request, team_id):
 	"""Page for adding a manager to a team."""
 	team = Team.objects.get(id=team_id)
@@ -133,6 +145,7 @@ def new_manager(request, team_id):
 	return render(request, 'teams/new_manager.html', context)
 
 
+@login_required
 def edit_manager(request, manager_id):
 	"""Page for editing a manager."""
 	manager = Manager.objects.get(id=manager_id)
