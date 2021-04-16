@@ -1,0 +1,12 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<p>Add a new player to <a href="{% url 'teams:team' team.id %}">{{ team }}</a></p>
+<form method="post" action="{% url 'teams:new_player' team.id %}">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button name="submit">add player</button>
+</form>
+
+{% endblock content %}

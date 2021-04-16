@@ -1,0 +1,12 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<p>Add a new team:</p>
+<form method="post" action="{% url 'teams:new_team' %}">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button name="submit">add team</button>
+</form>
+
+{% endblock content %}

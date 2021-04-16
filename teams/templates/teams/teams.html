@@ -1,0 +1,14 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<a href="{% url 'teams:new_team' %}">Add team</a>
+<ul>
+	{% for team in teams %}
+	<li><a href="{% url 'teams:team' team.id %}">{{ team }}</a></li>
+	{% empty %}
+	<li>No teams have been created yet.</li>
+	{% endfor %}
+</ul>
+
+{% endblock content %}

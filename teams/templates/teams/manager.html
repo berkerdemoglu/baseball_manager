@@ -1,0 +1,12 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<p>Name: {{ manager.name }}</p>
+<p>Team: <a href="{% url 'teams:team' manager.team.id %}">{{ manager.team }}</a></p>
+<p>From: {{ manager.country.name }} <i class="{{ manager.country.flag_css }}"></i></p>
+<p>Jersey Number: {{ manager.jersey_number }}</p>
+<p><a href="{% url 'teams:remove_manager' manager.id %}">remove manager</a></p>
+<p><a href="{% url 'teams:edit_manager' manager.id %}">edit manager</a></p>
+
+{% endblock content %}

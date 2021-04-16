@@ -1,0 +1,12 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+
+<p>Add a manager to <a href="{% url 'teams:team' team.id %}">{{ team }}</a>:</p>
+<form method="post" action="{% url 'teams:new_manager' team.id %}">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button name="submit">add manager</button>
+</form>
+
+{% endblock content %}
