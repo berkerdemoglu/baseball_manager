@@ -1,7 +1,27 @@
 {% extends "pages/base.html" %}
 
+{% block title %}Home{% endblock title %}
+
+{% block header %}
+
+<div class="jumbotron rounded">
+	<h1 class="display-3">Baseball Manager</h1>
+	<p class="lead">Manage your baseball team.</p>
+	<hr class="my-4">
+	<p class="lead">
+		{% if user.is_authenticated %}
+		Welcome back, {{ user.username }}. <a href="{% url 'teams:teams' %}">Manage your teams here</a>.
+		{% else %}
+		<a href="{% url 'users:register' %}">Register</a> an account and start managing your baseball team, better and faster.
+		{% endif %}
+	</p>
+	<p class="lead">Whether it be fantasy or little league baseball, create your team and add your players.</p>
+</div>
+
+{% endblock header %}
+
 {% block content %}
 
-<p>Baseball Manager is an app that you can use to manage your baseball team.</p>
+<p>This is the home page for Baseball Manager.</p>
 
 {% endblock content %}

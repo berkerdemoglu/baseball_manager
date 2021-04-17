@@ -1,5 +1,19 @@
 {% extends "pages/base.html" %}
 
+{% block title %}{{ player.name }}{% endblock title %}
+
+{% block header %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'teams:teams' %}">Teams</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'teams:team' player.team.id %}">{{ player.team.fullname }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ player.name }}</li>
+  </ol>
+</nav>
+
+{% endblock header %}
+
 {% block content %}
 
 <p>Name: {{ player.name }}</p>
@@ -7,7 +21,7 @@
 <p>Team: <a href="{% url 'teams:team' player.team.id %}">{{ player.team }}</a></p>
 <p>From: {{ player.country.name }} <i class="{{ player.country.flag_css }}"></i></p>
 <p>Jersey Number: {{ player.jersey_number }}</p>
-<p><a href="{% url 'teams:remove_player' player.id %}">Delete player</a></p>
-<p><a href="{% url 'teams:edit_player' player.id %}">Edit player</a></p>
+<p><a class="btn btn-danger" href="{% url 'teams:remove_player' player.id %}">Delete player</a></p>
+<p><a class="btn btn-info" href="{% url 'teams:edit_player' player.id %}">Edit player</a></p>
 
 {% endblock content %}

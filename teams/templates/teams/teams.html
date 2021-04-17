@@ -1,5 +1,17 @@
 {% extends "pages/base.html" %}
 
+{% block title %}Teams{% endblock title %}
+
+{% block header %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Teams</li>
+  </ol>
+</nav>
+
+{% endblock header %}
+
 {% block content %}
 
 <a href="{% url 'teams:new_team' %}">Add team</a>

@@ -1,9 +1,16 @@
 {% extends "pages/base.html" %}
 
-{% block content %}
+{% block title %}Edit {{ player.name }}{% endblock title %}
+
+{% block header %}
 
 <p>Editing {{ player }}...</p>
 <p><a href="{% url 'teams:player' player.id %}">Click here to go back to the player's page</a></p>
+
+{% endblock header %}
+
+{% block content %}
+
 <form method="post" action="{% url 'teams:edit_player' player.id %}">
 	{% csrf_token %}
 	{{ form.as_p }}

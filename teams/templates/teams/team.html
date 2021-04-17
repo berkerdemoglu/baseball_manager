@@ -1,8 +1,21 @@
 {% extends "pages/base.html" %}
 
+{% block title %}{{ team.fullname }}{% endblock title %}
+
+{% block header %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'teams:teams' %}">Teams</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ team.fullname }}</li>
+  </ol>
+</nav>
+
+{% endblock header %}
+
 {% block content %}
 
-<p><i>{{ team }}</i> <a href="{% url 'teams:remove_team' team.id %}">delete team</a></p>
+<p><i>{{ team }}</i></p>
 <a href="{% url 'teams:new_player' team.id %}">Add player to team</a>
 {% if team.manager %}
 	<p>Manager: <a href="{% url 'teams:manager' team.manager.id %}">{{ team.manager.name }}</a></p>
@@ -14,12 +27,14 @@
 <ol>
 	{% for player in players %}
 	<li>
-		<a href="{% url 'teams:player' player.id %}">{{ player.name }}</a>, {{ player.position }}
-		<a href="{% url 'teams:remove_player' player.id %}">delete player</a>
+		<a href="{% url 'teams:player' player.id %}">{{ player.name }}</a>, {{ player.position }} -
+		<a class="btn btn-danger btn-sm" href="{% url 'teams:remove_player' player.id %}">delete player</a>
 	</li>
 	{% empty %}
 	<li>No players for this team have been added yet.</li>
 	{% endfor %}
 </ol>
+
+<p><a class="btn btn-danger" href="{% url 'teams:remove_team' team.id %}">Delete team</a></p>
 
 {% endblock content %}
