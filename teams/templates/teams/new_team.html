@@ -1,12 +1,20 @@
 {% extends "pages/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}New team{% endblock title %}
+
+{% block header %}
+	<h1 class="display-4">Add a new team.</h1>
+{% endblock header %}
 
 {% block content %}
 
-<p>Add a new team:</p>
 <form method="post" action="{% url 'teams:new_team' %}">
 	{% csrf_token %}
-	{{ form.as_p }}
-	<button name="submit">add team</button>
+	{% bootstrap_form form %}
+	{% buttons %}
+		<button class="btn btn-primary" name="submit">Add team</button>
+	{% endbuttons %}
 </form>
 
 {% endblock content %}

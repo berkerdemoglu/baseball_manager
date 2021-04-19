@@ -3,13 +3,14 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Team, Player, Manager
 from .forms import TeamForm, PlayerForm, ManagerForm
+from .utils import check_team_owner
 
 
 # Team views
 @login_required
 def teams(request):
 	"""Page that lists all teams."""
-	teams = Team.objects.all()
+	teams = Team.objects.filter(owner=request.user).order_by('city')
 	context = {'teams': teams}
 	return render(request, 'teams/teams.html', context)
 
@@ -18,8 +19,10 @@ def teams(request):
 def team(request, team_id):
 	"""Page for a single team."""
 	team = Team.objects.get(id=team_id)
+	check_team_owner(request, team)
+
 	players = team.player_set.all().order_by('position')
-	context = {'team': team, 'players': players}
+	context = {'team': team, 'players': players, 'player_amount': len(players)}
 	return render(request, 'teams/team.html', context)
 
 
@@ -32,7 +35,9 @@ def new_team(request):
 		# POST method, process the form.
 		form = TeamForm(data=request.POST)
 		if form.is_valid():
-			form.save()
+			new_team = form.save(commit=False)
+			new_team.owner = request.user
+			new_team.save()
 			return redirect('teams:teams')
 
 	# Display a blank or invalid form.
@@ -44,6 +49,8 @@ def new_team(request):
 def remove_team(request, team_id):
 	"""View for removing a team."""
 	team = Team.objects.get(id=team_id)
+	check_team_owner(request, team)
+
 	team.delete()
 	return redirect('teams:teams')
 
@@ -53,6 +60,8 @@ def remove_team(request, team_id):
 def player(request, player_id):
 	"""Page for an individual player."""
 	player = Player.objects.get(id=player_id)
+	check_team_owner(request, player.team)
+
 	context = {'player': player}
 	return render(request, 'teams/player.html', context)
 
@@ -61,6 +70,7 @@ def player(request, player_id):
 def new_player(request, team_id):
 	"""Page for adding a new player to a team."""
 	team = Team.objects.get(id=team_id)
+	check_team_owner(request, team)
 
 	if request.method != 'POST':
 		form = PlayerForm()
@@ -82,6 +92,8 @@ def new_player(request, team_id):
 def remove_player(request, player_id):
 	"""View for removing a player."""
 	player = Player.objects.get(id=player_id)
+	check_team_owner(request, player.team)
+
 	team_id = player.team.id
 	player.delete()
 	return redirect('teams:team', team_id=team_id)
@@ -91,6 +103,7 @@ def remove_player(request, player_id):
 def edit_player(request, player_id):
 	"""Page for editing a player."""
 	player = Player.objects.get(id=player_id)
+	check_team_owner(request, player.team)
 
 	if request.method != 'POST':
 		# Fill form with previous info.
@@ -109,8 +122,10 @@ def edit_player(request, player_id):
 # Manager views
 @login_required
 def manager(request, manager_id):
-	"""Page for an individual player."""
+	"""Page for an individual manager."""
 	manager = Manager.objects.get(id=manager_id)
+	check_team_owner(request, manager.team)
+
 	context = {'manager': manager}
 	return render(request, 'teams/manager.html', context)
 
@@ -119,6 +134,8 @@ def manager(request, manager_id):
 def remove_manager(request, manager_id):
 	"""View for removing a manager."""
 	manager = Manager.objects.get(id=manager_id)
+	check_team_owner(request, manager.team)
+
 	team_id = manager.team.id
 	manager.delete()
 	return redirect('teams:team', team_id=team_id)
@@ -128,6 +145,7 @@ def remove_manager(request, manager_id):
 def new_manager(request, team_id):
 	"""Page for adding a manager to a team."""
 	team = Team.objects.get(id=team_id)
+	check_team_owner(request, team)
 
 	if request.method != 'POST':
 		form = ManagerForm()
@@ -149,6 +167,7 @@ def new_manager(request, team_id):
 def edit_manager(request, manager_id):
 	"""Page for editing a manager."""
 	manager = Manager.objects.get(id=manager_id)
+	check_team_owner(request, manager.team)
 
 	if request.method != 'POST':
 		# Fill form with previous info.

@@ -1,12 +1,20 @@
 {% extends "pages/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Add manager{% endblock title %}
+	
+{% block header %}
+	<h1 class="display-4">Add a new manager to <a href="{% url 'teams:team' team.id %}">{{ team }}.</a></h1>
+{% endblock header %}
 
 {% block content %}
 
-<p>Add a manager to <a href="{% url 'teams:team' team.id %}">{{ team }}</a>:</p>
 <form method="post" action="{% url 'teams:new_manager' team.id %}">
 	{% csrf_token %}
-	{{ form.as_p }}
-	<button name="submit">add manager</button>
+	{% bootstrap_form form %}
+	{% buttons %}
+		<button class="btn btn-primary" name="submit">Add manager</button>
+	{% endbuttons %}
 </form>
 
 {% endblock content %}

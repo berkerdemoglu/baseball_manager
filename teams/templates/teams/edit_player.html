@@ -1,11 +1,12 @@
 {% extends "pages/base.html" %}
+{% load bootstrap4 %}
 
 {% block title %}Edit {{ player.name }}{% endblock title %}
 
 {% block header %}
 
-<p>Editing {{ player }}...</p>
-<p><a href="{% url 'teams:player' player.id %}">Click here to go back to the player's page</a></p>
+<p class="lead">Editing {{ player }}...</p>
+<p class="lead"><a href="{% url 'teams:player' player.id %}">Click here to go back to the player's page</a></p>
 
 {% endblock header %}
 
@@ -13,8 +14,10 @@
 
 <form method="post" action="{% url 'teams:edit_player' player.id %}">
 	{% csrf_token %}
-	{{ form.as_p }}
-	<button name="submit">edit player</button>
+	{% bootstrap_form form %}
+	{% buttons %}
+		<button class="btn btn-primary" name="submit">Edit player</button>
+	{% endbuttons %}
 </form>
 
 {% endblock content %}

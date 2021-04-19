@@ -15,26 +15,34 @@
 
 {% block content %}
 
-<p><i>{{ team }}</i></p>
-<a href="{% url 'teams:new_player' team.id %}">Add player to team</a>
-{% if team.manager %}
-	<p>Manager: <a href="{% url 'teams:manager' team.manager.id %}">{{ team.manager.name }}</a></p>
-{% else %}
-	<p>
-		This team does not have a manager.<a href="{% url 'teams:new_manager' team.id %}">Click to add a manager to this team.</a>
-	</p>
-{% endif %}
-<ol>
-	{% for player in players %}
-	<li>
-		<a href="{% url 'teams:player' player.id %}">{{ player.name }}</a>, {{ player.position }} -
-		<a class="btn btn-danger btn-sm" href="{% url 'teams:remove_player' player.id %}">delete player</a>
-	</li>
-	{% empty %}
-	<li>No players for this team have been added yet.</li>
-	{% endfor %}
-</ol>
-
-<p><a class="btn btn-danger" href="{% url 'teams:remove_team' team.id %}">Delete team</a></p>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><i>{{ team }}</i></h5>
+    {% if team.manager %}
+    	<p class="card-text">Manager: <a href="{% url 'teams:manager' team.manager.id %}">{{ team.manager.name }}</a></p>
+    	<button class="btn btn-primary" disabled>
+    		Add manager
+    	</button>
+    {% else %}
+    	<p class="card-text">Manager: None</p>
+    	<a class="btn btn-primary" href="{% url 'teams:new_manager' team.id %}">Add manager</a>
+    {% endif %}
+  </div>
+  <ul class="list-group list-group-flush">
+  	{% for player in players %}
+    	<li class="list-group-item">
+    		<a href="{% url 'teams:player' player.id %}">{{ player.name }}</a>, {{ player.position }}</li>
+    {% empty %}
+    	<li class="list-group-item">No players for this team have been added yet.</li>
+    {% endfor %}
+  </ul>
+  <div class="card-body">
+  	<a class="btn btn-primary" href="{% url 'teams:new_player' team.id %}">Add player</a>
+    <button type="button" class="btn btn-info">
+  		Players <span class="badge badge-light">{{ player_amount }}</span>
+		</button>
+		<a class="btn btn-danger" href="{% url 'teams:remove_team' team.id %}">Delete team</a>
+  </div>
+</div>
 
 {% endblock content %}

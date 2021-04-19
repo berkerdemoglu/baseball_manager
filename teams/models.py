@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 
 
@@ -6,6 +7,7 @@ class Team(models.Model):
 	"""A baseball team."""
 	city = models.CharField(max_length=80)
 	name = models.CharField(max_length=50)
+	owner = models.ForeignKey(User, models.CASCADE)
 
 	fullname = models.CharField(max_length=130, blank=True)
 
