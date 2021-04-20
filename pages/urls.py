@@ -8,4 +8,6 @@ from . import views
 urlpatterns = [
 	# Home page
 	path('', views.index, name='index'),
+	# Help page
+	path('help/', views.help, name='help'),
 ]
